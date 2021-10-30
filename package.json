@@ -1,5 +1,5 @@
 {
-  "name": "titaniumaplus",
+  "name": "Ecommerce-and-cart-management",
   "version": "1.0.0",
   "description": "repo for assignments and practice problems",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sabihak89/titaniumaplus.git"
+    "url": "git+https://github.com/maxhothead776/Ecommerce-and-cart-management.git"
   },
-  "author": "functionUp",
+  "author": "mayank attri",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sabihak89/titaniumaplus/issues"
+    "url": "https://github.com/maxhothead776/Ecommerce-and-cart-management/issues"
   },
-  "homepage": "https://github.com/sabihak89/titaniumaplus#readme",
+  "homepage": "https://github.com/maxhothead776/Ecommerce-and-cart-management#readme",
   "dependencies": {
     "aws-sdk": "^2.1005.0",
     "bcrypt": "^5.0.1",
