@@ -1,3 +1,3 @@
 module.exports = {
-    userAuth: require('./userAuth')
+    userAuth : require("./userAuth")
 }

@@ -1,131 +1,71 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const {systemConfig} = require('../configs')
+const { systemConfig } = require("../configs");
 
-const reemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-const rephone = /^[6-9][0-9]{9}$/;
+const phoneRegex = /^[6-9][0-9]{9}$/;
 
-const reimage = /.*\.(jpeg|jpg|png)$/
+const imageRegex = /.*\.(jpeg|jpg|png)$/;
 
-// mobile
-const validatePhone = function (phone) {
-    return rephone.test(phone);
+const pincodeRegex = /^[1-9][0-9]{5}$/;
+
+const validEmail = function (email) {
+  return emailRegex.test(email);
 };
 
-// email
-const validateEmail = function (email) {
-    return reemail.test(email)
+const validPhone = function (phone) {
+  return phoneRegex.test(phone);
+};
+
+const validPassword = function (password) {
+  return password.length >= 8 && password.length <= 15;
+};
+
+const validPincode = function (pincode) {
+  return pincodeRegex.test(pincode);
 };
 
 const isValid = function (value) {
-    if (typeof value === 'undefined' || value === null) return false
-    if (typeof value === 'string' && value.trim().length === 0) return false
-    return true;
-}
-
-
-//password
-const PasswordLength = function (password) {
-    if (password.length >= 8 && password.length <= 15) return true
+  if (typeof value === "object" && value.length === 0) return false;
+  if (typeof value === "undefined" || value === null) return false;
+  if (typeof value === "string" && value.trim().length === 0) return false;
+  if (typeof value === "number" && value.toString().trim().length === 0)
     return false;
-}
+  if (typeof value == "Boolean") return true;
+  return true;
+};
 
-//request Body
-const isValidRequestBody = function (requestBody) {
-    return Object.keys(requestBody).length > 0
-}
-
-// file
-const isValidFiles = function (requestFiles) {
-    return requestFiles.length > 0
-}
-
-// image 
-const isValidImage = function (image) {
-    return reimage.test(image.originalname)
-}
-
-//objectId
 const isValidObjectId = function (objectId) {
-    return mongoose.Types.ObjectId.isValid(objectId)
-}
+  return mongoose.Types.ObjectId.isValid(objectId);
+};
 
-//String
-const isValidString = function (value) {
-    return Object.prototype.toString.call(value) === "[object String]"
-}
+const isValidRequestBody = function (requestBody) {
+  return Object.keys(requestBody).length > 0;
+};
 
-//Number
-const isValidNumber = function (value) {
-    if (typeof value === "number" && value.toString().trim().length === 0) return false;
-    return true;
-}
+const validFile = function (files) {
+  // didnt write files** .originalName
+  return imageRegex.test(files.originalname);
+};
 
-//Array
-const isValidArray = function(array) {
-    return Object.keys(array).length > 0
-}
+const isValidSize = function (size) {
+  return systemConfig.sizeEnumArray.indexOf(size) !== -1;
+};
 
-//date
-const isValidDate = function (value) {
-    return Object.prototype.toString.call(value) === "[object Date]"
-}
-
-//price
-const isValidPrice = function (price) {
-    return price > 0
-}
-
-//currencyId 
-const isValidCurrencyId = function (currencyId) {
-    return currencyId == "INR"
-}
-
-//currencyFormat 
-// const isValidCurrencyFormat = function (currencyFormat) {
-//     return currencyFormat == "₹"
-// }
-
-//shipping
-const isValidFreeShipping = function (value) {
-    return value === true || value === false
-}
-
-//isValidInstallment
-const isValidInstallment = function(installments){
-    return ((typeof installments == "number") && (installments % 1 === 0) && (installments > 0))
-}
-
-//availablesizes
-const isValidSize = function(size) {
-    let result = true;
-    for(let i=0; i<size.length; i++){   
-        if(systemConfig.sizeEnumArray.indexOf(size[i]) === -1) result = false
-    }
-    return result
-}
-
+const isValidStatus = function (status) {
+  return systemConfig.OrderStatusEnumArray.indexOf(status) !== -1;
+};
 
 module.exports = {
-    validateEmail,
-    emailRegex: reemail,
-    isValid,
-    isValidRequestBody,
-    isValidObjectId,
-    isValidString,
-    isValidArray,
-    PasswordLength,
-    isValidDate,
-    isValidNumber,
-    isValidFiles,
-    validatePhone,
-    phoneRegex: rephone,
-    isValidImage,
-    imageRegex: reimage,
-    isValidPrice,
-    isValidCurrencyId,
-    isValidFreeShipping,
-    isValidSize,
-    isValidInstallment
+  validEmail,
+  validPhone,
+  validPassword,
+  validPincode,
+  isValid,
+  isValidRequestBody,
+  isValidObjectId,
+  validFile,
+  isValidSize,
+  isValidStatus,
 };

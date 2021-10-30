@@ -1,52 +1,42 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-let productSchema = new mongoose.Schema({
+const { systemConfig } = require("../configs");
+
+const productSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: 'title is required',
-        unique: true
+      type: String,
+      required: "enter the title",
+      unique: true,
+      trim: true,
     },
     description: {
-        type: String,
-        required: 'description is required',
+      type: String,
+      required: "enter the description",
+      trim: true,
     },
-    price: {
-        type: Number,
-        required: 'price is required'
-    },
-    currencyId: {
-        type: String,
-        required: 'currencyId is required',
-    },
+    price: { type: Number, required: "enter the price", trim: true },
+    currencyId: { type: String, required: "enter the currencyId", trim: true },
     currencyFormat: {
+      type: String,
+      required: "enter the currencyFormat",
+      trim: true,
+    },
+    isFreeShipping: { type: Boolean, default: false, trim: true },
+    productImage: { type: String, required: "add an image link", trim: true }, // s3 link
+    style: { type: String, trim: true },
+    availableSizes: [
+      {
         type: String,
-        required: 'currencyFormat is required'
-    },
-    isFreeShipping: {
-        type: Boolean,
-        default: false
-    },
-    productImage: {
-        type: String,
-        required: 'productImage is required'
-    },  // s3 link
-    style: {
-        type: String
-    },
-    availableSizes: {
-        type: [String],
-        enum: ["S", "XS", "M", "X", "L", "XXL", "XL"]
-    },
-    installments: {
-        type: Number
-    },
-    deletedAt: {
-        type: Date
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
-}, { timestamps: true })
+        enum: systemConfig.sizeEnumArray,
+        trim: true,
+      },
+    ],
+    installments: { type: Number, trim: true },
+    deletedAt: { type: Date },
+    isDeleted: { type: Boolean, default: false },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Product", productSchema)
+module.exports = mongoose.model("Product", productSchema);

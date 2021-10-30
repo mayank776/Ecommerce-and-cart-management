@@ -1,3 +1,3 @@
 module.exports = {
-    systemConfig: require('./system')
+    systemConfig : require("./system")
 }

@@ -1,5 +1,6 @@
 module.exports = {
-    aws : require('./aws'),
-    validator : require('./validator'),
-    jwt : require('./jwt')
-}
+    validator: require("./validator"),
+    jwt: require("./jwt"),
+    aws: require("./aws-s3"),
+  };
+  
