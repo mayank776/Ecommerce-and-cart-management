@@ -27,7 +27,7 @@ const orderSchema = new mongoose.Schema({
   },
   totalItems: { type: Number, required: "enter the total no. of items" },
   totalQuantity: {
-    type: number,
+    type: Number,
     required: "enter the total quantity of all items",
   },
   cancellable: { type: Boolean, default: true },

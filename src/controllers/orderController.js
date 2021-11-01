@@ -135,7 +135,7 @@ const updateOrder = async (req, res) => {
 
     if (userIdFromParams !== userIdFromToken) {
       return res
-        .status(400)
+        .status(403)
         .send({ status: "FAILURE", msg: "user not authorised" });
     }
 
@@ -144,6 +144,39 @@ const updateOrder = async (req, res) => {
     if (!user) {
       return res.status(404).send({ status: "FAILURE", msg: "user not found" });
     }
+
+    const {orderId, status} = req.body
+
+    if (!validator.isValidObjectId(orderId)) {
+      return res
+        .status(400)
+        .send({ status: "FAILURE", msg: "token user id not valid" });
+    }
+
+    const order = await orderModel.findById(orderId);
+
+    if (!order) {
+      return res.status(404).send({ status: "FAILURE", msg: "order not found" });
+    }
+
+    if(order.userId != userIdFromParams){
+      return res.status(403).send({ status: "FAILURE", msg: "user not authorised" });
+    }
+
+    if(! validator.isValidStatus(status)){
+      return res.status(400).send({ status: "FAILURE", msg: "provide valid status" });
+    }
+
+    if(order.cancellable == true && status== "cancelled"){
+      const ordercancelled = await orderModel.findByIdAndUpdate({userId:userIdFromParams},{$set:{status:"cancelled"}},{new:true})
+
+      return res.status(200).send({status:false, message:"Success",data:ordercancelled})
+    }
+
+    const ordernotcancelled = await orderModel.findByIdAndUpdate({userId:userIdFromParams},{$set:{status:status}},{new:true})
+
+    return res.status(200).send({status:false, message:"Success",data:ordernotcancelled})
+
   } catch (error) {
     res.status(500).send({ status: "FAILURE", msg: error.message });
   }
